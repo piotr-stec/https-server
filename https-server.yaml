@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: https-server
+  labels:
+    app.kubernetes.io/name: https-server
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: https-server
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: https-server
+    spec:
+      containers:
+        - name: https-server
+          image: docker.io/piotr439/https-server:latest
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: https-server
+spec:
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: https-server
+  ports:
+    - name: rpc
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30000

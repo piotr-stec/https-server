@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: https-server
+spec:
+  type: NodePort
+  ports:
+    - port: 443 # External port (HTTPS)
+      targetPort: 3000 # Internal port of your https-server
+      nodePort: 30000 # The port that will be exposed on the node
+  selector:
+    app: https-server
